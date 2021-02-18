@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;0,700;1,500&family=Poppins:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./RESET.CSS" />
+    <title>Document</title>
+    <style type="text/css">
+      body {
+        display: flex;
+      }
+
+      .banner {
+        display: flex;
+        flex-direction: row;
+        flex-flow: wrap;
+        position: fixed;
+        justify-content: center;
+        align-items: center;
+        bottom: 5%;
+        background-color: #ed3b3c;  
+        width: 96%;
+        height: auto;
+        border-radius: 2vw;
+        box-shadow: 3px 5px 10px #00000050;
+        padding: 1vw;
+        margin: 0vw 1vw 0vw 1vw;
+      }
+
+      .store {
+        width: 12vw;
+        margin: 1.5%;
+      }
+
+      #contador {
+        font-family: 'Poppins', sans-serif;
+        font-size: 2.5vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .txt_banner {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.5vw;
+        display: flex;
+        align-items: center;
+        /*padding: 0vw 1vw 0vw 1vw;*/
+        margin: 1vw;
+        /*margin-right: 1%;*/
+      }
+
+      .img_banner {
+        display: flex;
+        align-items: center;
+        /*margin-right: 1%;*/
+      }
+
+      @media screen and (max-width: 992px) {
+        .banner {
+          flex-flow: column;
+        }
+
+        .store {
+          width: 14vw;
+        }
+
+        .txt_banner {
+          font-size: 3vw;
+        }
+      }
+
+      /* On screens that are 600px or less, set the background color to olive */
+      @media screen and (max-width: 600px) {
+      }
+    </style>
+  </head>
+  <body>
+      <div class="banner">
+          <div class="txt_banner">
+              <span>Assine em&nbsp;</span>
+              <span id="minuto">10</span>
+              <span>:</span>
+              <span id="segundo">00</span>
+              <span>&nbsp;e ganhe a publicação do seu app GRÁTIS!&nbsp;</span>
+          </div>
+          <div class="img_banner">
+              <img class="store" src="./img/apps.svg" />
+              <img class="store" src="./img/googlep.svg" />
+          </div>
+      </div>
+
+      <script type="text/javascript">
+          function cronometro() {
+              var cache = localStorage.getItem("tempoCronometroCreapp"); //chama o cache
+
+              if (cache) { //verifica se o cache existe
+                  cache = JSON.parse(cache); //converte para JSON
+                  var segundos = cache.segundos; //pega os segundos
+                  var minutos = cache.minutos; //pega os minutos
+                  var hora = cache.hora; //pega as horas
+              } else {
+                  var segundos = 59;
+                  var minutos = 9;
+                  var hora = 0;
+
+                  //console.log(minutos);
+              }
+
+              intervalo = window.setInterval(function () {
+
+                  localStorage.setItem("tempoCronometroCreapp", '{"hora": ' + hora + ', "minutos": ' + minutos + ', "segundos": ' + segundos + '}'); //atualiza o cache a cada segundo
+
+                  if (segundos == 0) { //verifica se segundos foi pra 0, diminui um min e volta segundos pra 59
+                      minutos--;
+                      segundos = 59;
+                  }
+
+                  if (minutos == 0) { //verifica se minutos foi pra 0, diminui uma hora e volta minutos pra 0 (é bom deixar, caso precisamos mais pra frente)
+                      hora--;
+                      minutos = 0;
+                  }
+
+                  if (hora < 0) {
+                      hora = 0;
+                  }
+
+                  /*if (hora < 10) { //verifica se hora é menor q 10, para colocar um '0' no lado esquerdo (é bom deixar caso precise de um campo hora)
+                      document.getElementById("hora").innerHTML = "0" + hora;
+                  } else {
+                      document.getElementById("hora").innerHTML = hora;
+                  }*/
+
+                  if (segundos < 10) { //verifica se segundos é menor q 10, para colocar um '0' no lado esquerdo
+                      document.getElementById("segundo").innerHTML = "0" + segundos;
+                  } else {
+                      document.getElementById("segundo").innerHTML = segundos;
+                  }
+
+
+                  if (minutos < 10) { //verifica se minutos é menor q 10, para colocar um '0' no lado esquerdo
+                      document.getElementById("minuto").innerHTML = "0" + minutos;
+                  } else {
+                      document.getElementById("minuto").innerHTML = minutos;
+                  }
+
+                  segundos--; //segundos vai diminuindo de 1 em 1
+                  if ((hora == 0) && (minutos == 0) && (segundos == 0)) {  //verifica tudo ta zerado, caso sim ele para o intervalo e deixa segundos zerado
+                      clearInterval(intervalo);
+                      document.getElementById("segundo").innerHTML = "0" + segundos;
+                      console.log('para');
+
+                  }
+
+
+              }, 1000); //aqui é o tempo de um segundo em milesimos.
+
+
+          }
+
+          function reiniciar() { //função que limpa o cache e reinica o cronometro
+              localStorage.clear();
+              document.location.reload();
+          }
+
+          window.onload = cronometro; //quando carregar a pagina inicia a função cronometro
+      </script>
+  </body>
+</html>
