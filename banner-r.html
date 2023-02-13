@@ -80,12 +80,15 @@
     </style>
   </head>
   <body>
+      <h1>Temporizador que grava no localStorage para que não se perca ao recarregar a promoção</h1>
+      <br>
+      <button onclick="reiniciar()">Reiniciar o contador</button>
       <div class="banner">
           <div class="txt_banner">
               <span>Assine em&nbsp;</span>
-              <span id="minuto">10</span>
+              <span id="minuto"></span>
               <span>:</span>
-              <span id="segundo">00</span>
+              <span id="segundo"></span>
               <span>&nbsp;e ganhe a publicação do seu app GRÁTIS!&nbsp;</span>
           </div>
           <div class="img_banner">
@@ -100,13 +103,13 @@
 
               if (cache) { //verifica se o cache existe
                   cache = JSON.parse(cache); //converte para JSON
-                  var segundos = cache.segundos; //pega os segundos
-                  var minutos = cache.minutos; //pega os minutos
                   var hora = cache.hora; //pega as horas
+                  var minutos = cache.minutos; //pega os minutos
+                  var segundos = cache.segundos; //pega os segundos
               } else {
-                  var segundos = 59;
-                  var minutos = 9;
                   var hora = 0;
+                  var minutos = 10;
+                  var segundos = 0;
 
                   //console.log(minutos);
               }
@@ -114,7 +117,7 @@
               intervalo = window.setInterval(function () {
 
                   localStorage.setItem("tempoCronometroCreapp", '{"hora": ' + hora + ', "minutos": ' + minutos + ', "segundos": ' + segundos + '}'); //atualiza o cache a cada segundo
-
+                  //localStorage.setItem('s',"oi");
                   if (segundos == 0) { //verifica se segundos foi pra 0, diminui um min e volta segundos pra 59
                       minutos--;
                       segundos = 59;
@@ -163,7 +166,7 @@
           }
 
           function reiniciar() { //função que limpa o cache e reinica o cronometro
-              localStorage.clear();
+              localStorage.removeItem("tempoCronometroCreapp");
               document.location.reload();
           }
 
